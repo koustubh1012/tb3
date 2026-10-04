@@ -99,6 +99,7 @@ sudo reboot
 
 ### 2d. Install ROS 2 Jazzy + TurtleBot3 on the Pi
 1. Install **ROS 2 Jazzy ros-base** (not desktop): https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html
+   Install both `ros-jazzy-ros-base` **and** `ros-dev-tools` (it provides `rosdep` and `colcon`). Check: `ls /opt/ros/jazzy/setup.bash && which rosdep colcon`.
 2. Build the robot packages:
    ```bash
    sudo apt install python3-argcomplete python3-colcon-common-extensions libboost-system-dev build-essential \
@@ -110,6 +111,9 @@ sudo reboot
    cd ~/turtlebot3_ws/src/turtlebot3 && rm -r turtlebot3_cartographer turtlebot3_navigation2
    cd ~/turtlebot3_ws
    echo 'source /opt/ros/jazzy/setup.bash' >> ~/.bashrc && source ~/.bashrc
+   # ros-base lacks some packages the robot needs (e.g. urdf); let rosdep fetch them
+   sudo rosdep init; rosdep update
+   rosdep install --from-paths src --ignore-src -y --rosdistro jazzy
    colcon build --symlink-install --parallel-workers 1
    echo 'source ~/turtlebot3_ws/install/setup.bash' >> ~/.bashrc && source ~/.bashrc
    ```

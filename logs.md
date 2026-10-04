@@ -18,4 +18,6 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 - **Section 1B done.**
 - Section 2a/2b: flashed Ubuntu Server 24.04 (hostname `turtlebot`, SSH password auth). First flash never joined Wi-Fi: the iPhone hotspot name had a curly apostrophe. Renamed the phone hotspot to `koustubhiPhone` and reflashed; the Pi joined at `172.20.10.7`, `turtlebot.local` resolves, SSH port open. Added the apostrophe gotcha to guide 2b.
 - Pi: Ubuntu 24.04.5 aarch64, 4 GB RAM, 16 GB SD (12 GB free). Section 2c done: auto-updates off, sleep targets masked, 2 GB `/swapfile` in fstab, verified after reboot.
-- **Open:** 2d (install ROS 2 Jazzy ros-base, build the robot packages). Friends who already started the container need `git pull && docker compose up -d`.
+- Section 2d done: ROS 2 Jazzy ros-base on the Pi; `colcon build` of the robot workspace finished 8/8 packages in 4m37s.
+  - Bug fixed in guide: the build failed on missing `urdf`, because ros-base plus the guide's apt list isn't enough. Added a `rosdep install` step to 2d. `rosdep` itself was missing because `ros-dev-tools` hadn't been installed, so the guide now says to install it explicitly (not Ubuntu's `python3-rosdep2`).
+- **Open:** 2e (udev rules, ROS_DOMAIN_ID, TURTLEBOT3_MODEL, LDS_MODEL; check the LiDAR sticker), then section 3 (OpenCR firmware). Friends who already started the container need `git pull && docker compose up -d`.
