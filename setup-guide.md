@@ -80,7 +80,8 @@ Try these in order on the laptop:
 1. `ssh ubuntu@turtlebot.local`
 2. Your router's admin page, connected devices / DHCP clients, look for `turtlebot`
 3. Scan your subnet (adjust to your network): `sudo nmap -sn 192.168.1.0/24`
-4. Phone hotspot: use your hotspot's credentials in step 2a; the hotspot screen lists connected devices and IPs
+4. Phone hotspot: use your hotspot's credentials in step 2a; the hotspot screen lists connected devices and IPs.
+   **iPhone:** the default hotspot name `Name’s iPhone` uses a curly `’`, and typing a straight `'` in the Imager means the Pi never connects. Rename the phone without an apostrophe (Settings → General → About → Name) before flashing, and turn on **Maximize Compatibility**.
 
 **Fallback:** plug an Ethernet cable from the Pi into your router, SSH in over that, then fix Wi-Fi in `/etc/netplan/50-cloud-init.yaml` and run `sudo netplan apply`.
 
