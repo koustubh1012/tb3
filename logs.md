@@ -17,4 +17,5 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 - Bug fixed: RViz hung on its splash screen (`failed to load driver: iris`) because the container had no GPU access. Added `devices: /dev/dri` to `compose.yaml`; RViz now runs with OpenGL 4.6 on the Intel iGPU. Added this and the lingering gotcha to the guide's Common problems table.
 - **Section 1B done.**
 - Section 2a/2b: flashed Ubuntu Server 24.04 (hostname `turtlebot`, SSH password auth). First flash never joined Wi-Fi: the iPhone hotspot name had a curly apostrophe. Renamed the phone hotspot to `koustubhiPhone` and reflashed; the Pi joined at `172.20.10.7`, `turtlebot.local` resolves, SSH port open. Added the apostrophe gotcha to guide 2b.
-- **Open:** log in over SSH and do 2c (auto-updates off, no sleep, swap, reboot). Friends who already started the container need `git pull && docker compose up -d`.
+- Pi: Ubuntu 24.04.5 aarch64, 4 GB RAM, 16 GB SD (12 GB free). Section 2c done: auto-updates off, sleep targets masked, 2 GB `/swapfile` in fstab, verified after reboot.
+- **Open:** 2d (install ROS 2 Jazzy ros-base, build the robot packages). Friends who already started the container need `git pull && docker compose up -d`.
