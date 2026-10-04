@@ -12,4 +12,5 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
   - Started `sudo docker compose up -d --build`, since the group needs a re-login to take effect.
 - Build finished; `tb3` container (image `tb3-jazzy`) is up.
 - Gotcha: logging out did **not** apply the new `docker` group. User lingering is enabled (`loginctl show-user $USER -p Linger`), so the systemd user manager from boot survives logout and terminals inherit the old groups. Fix: reboot. Until then, use `sudo docker ...`.
-- **Open:** reboot so `docker` works without sudo, check the ROS packages inside the container, `xhost +local:docker`, test `rviz2`. Then start section 2 (flash the Pi).
+- Verified inside the container: `ROS_DOMAIN_ID=30`, `TURTLEBOT3_MODEL=burger`, `DISPLAY=:0`; turtlebot3_*, cartographer_ros and nav2_bringup packages present.
+- **Open:** reboot so `docker` works without sudo, `xhost +local:docker`, test `rviz2`. Then start section 2 (flash the Pi).
