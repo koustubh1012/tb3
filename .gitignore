@@ -1,0 +1,13 @@
+# Saved maps are machine-specific (and written as root by the container)
+maps/
+
+# colcon build output, if anyone builds on the host
+build/
+install/
+log/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

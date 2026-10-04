@@ -1,0 +1,17 @@
+services:
+  tb3:
+    build: .
+    image: tb3-jazzy
+    container_name: tb3
+    network_mode: host   # lets ROS 2 discovery reach the robot
+    ipc: host
+    environment:
+      - DISPLAY
+      - ROS_DOMAIN_ID=30
+      - TURTLEBOT3_MODEL=burger
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix   # GUI apps (RViz)
+      - ./maps:/root/maps               # saved maps land next to this file
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
