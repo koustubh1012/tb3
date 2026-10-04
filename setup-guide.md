@@ -171,6 +171,8 @@ ros2 launch turtlebot3_navigation2 navigation2.launch.py map:=$HOME/map.yaml   #
 | Symptom | Likely cause / fix |
 |---|---|
 | Laptop can't see robot topics | `ROS_DOMAIN_ID` differs, different Wi-Fi/subnet, or router blocks multicast. Try both on a phone hotspot to test. If still stuck, set `export RMW_IMPLEMENTATION=rmw_fastrtps_cpp` on both. |
+| RViz in Docker stuck on a small splash window; log shows `failed to load driver: iris` / `Failed to query drm device` | The container can't see the GPU. `compose.yaml` passes `/dev/dri` through; if you edited it, restore that and run `docker compose up -d`. |
+| `permission denied ... docker.sock` even after logging out and back in | Your user's systemd manager survives logout when lingering is on (`loginctl show-user $USER -p Linger`), so the new `docker` group isn't picked up. Reboot. |
 | GUI won't open from Docker (`cannot open display`) | Run `xhost +local:docker` on the laptop and check `echo $DISPLAY` inside the container is set. |
 | `/dev/ttyACM0` not found | OpenCR not powered/plugged in, or udev rules not reloaded. Check `ls /dev/ttyACM*`. |
 | LiDAR not spinning / no `/scan` | Wrong `LDS_MODEL`, or LiDAR USB cable loose. |

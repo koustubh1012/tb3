@@ -9,6 +9,8 @@ services:
       - DISPLAY
       - ROS_DOMAIN_ID=30
       - TURTLEBOT3_MODEL=burger
+    devices:
+      - /dev/dri:/dev/dri               # GPU for RViz/Gazebo; without it RViz hangs on the splash screen
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix   # GUI apps (RViz)
       - ./maps:/root/maps               # saved maps land next to this file

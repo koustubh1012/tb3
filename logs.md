@@ -13,4 +13,7 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 - Build finished; `tb3` container (image `tb3-jazzy`) is up.
 - Gotcha: logging out did **not** apply the new `docker` group. User lingering is enabled (`loginctl show-user $USER -p Linger`), so the systemd user manager from boot survives logout and terminals inherit the old groups. Fix: reboot. Until then, use `sudo docker ...`.
 - Verified inside the container: `ROS_DOMAIN_ID=30`, `TURTLEBOT3_MODEL=burger`, `DISPLAY=:0`; turtlebot3_*, cartographer_ros and nav2_bringup packages present.
-- **Open:** reboot so `docker` works without sudo, `xhost +local:docker`, test `rviz2`. Then start section 2 (flash the Pi).
+- Rebooted: `docker` now works without sudo; `tb3` came back up on its own.
+- Bug fixed: RViz hung on its splash screen (`failed to load driver: iris`) because the container had no GPU access. Added `devices: /dev/dri` to `compose.yaml`; RViz now runs with OpenGL 4.6 on the Intel iGPU. Added this and the lingering gotcha to the guide's Common problems table.
+- **Section 1B done.**
+- **Open:** start section 2 (flash the Pi). Friends who already started the container need `git pull && docker compose up -d`.
