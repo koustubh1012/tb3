@@ -20,4 +20,6 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 - Pi: Ubuntu 24.04.5 aarch64, 4 GB RAM, 16 GB SD (12 GB free). Section 2c done: auto-updates off, sleep targets masked, 2 GB `/swapfile` in fstab, verified after reboot.
 - Section 2d done: ROS 2 Jazzy ros-base on the Pi; `colcon build` of the robot workspace finished 8/8 packages in 4m37s.
   - Bug fixed in guide: the build failed on missing `urdf`, because ros-base plus the guide's apt list isn't enough. Added a `rosdep install` step to 2d. `rosdep` itself was missing because `ros-dev-tools` hadn't been installed, so the guide now says to install it explicitly (not Ubuntu's `python3-rosdep2`).
-- **Open:** 2e (udev rules, ROS_DOMAIN_ID, TURTLEBOT3_MODEL, LDS_MODEL; check the LiDAR sticker), then section 3 (OpenCR firmware). Friends who already started the container need `git pull && docker compose up -d`.
+- 2e in progress: `ROS_DOMAIN_ID=30` and `TURTLEBOT3_MODEL=burger` are in the Pi's `~/.bashrc`.
+  - Found that `ros-jazzy-ros-base` had never actually installed (`ros2: command not found`). Installing it failed: `liblz4-dev`/`libzstd-dev` unmet dependencies. Cause: the Pi image's `ubuntu.sources` lacked `noble-updates`. Added it, ran `full-upgrade`, and ros-base installed. Added a check to guide 2c and two rows to Common problems.
+- **Open:** reboot the Pi (core packages upgraded), copy udev rules, set `LDS_MODEL` (check the LiDAR sticker), then section 3 (OpenCR firmware). Friends who already started the container need `git pull && docker compose up -d`.

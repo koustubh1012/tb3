@@ -91,6 +91,11 @@ Try these in order on the laptop:
 sudo nano /etc/apt/apt.conf.d/20auto-upgrades
 # Stop the Pi from sleeping
 sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+# Make sure apt can see noble-updates (some Pi images ship without it, and ROS then fails
+# with liblz4-dev/libzstd-dev "unmet dependencies"). Should print a line with noble-updates:
+grep ^Suites /etc/apt/sources.list.d/ubuntu.sources
+# If it doesn't: sudo sed -i 's/^Suites: noble\( \|$\)/Suites: noble noble-updates\1/' /etc/apt/sources.list.d/ubuntu.sources
+sudo apt update && sudo apt full-upgrade -y
 # Add 2 GB swap so the build doesn't run out of memory (essential on 2 GB Pis, harmless otherwise)
 sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
@@ -182,4 +187,6 @@ ros2 launch turtlebot3_navigation2 navigation2.launch.py map:=$HOME/map.yaml   #
 | `/dev/ttyACM0` not found | OpenCR not powered/plugged in, or udev rules not reloaded. Check `ls /dev/ttyACM*`. |
 | LiDAR not spinning / no `/scan` | Wrong `LDS_MODEL`, or LiDAR USB cable loose. |
 | Robot jerky or stops | Battery low (OpenCR beeps), or Wi-Fi latency. |
+| Pi: `ros-jazzy-ros-base` fails with `liblz4-dev`/`libzstd-dev` unmet dependencies | `noble-updates` is missing from `/etc/apt/sources.list.d/ubuntu.sources`. Add it (see 2c), then `sudo apt update && sudo apt full-upgrade`. |
+| Pi: `ros2: command not found` though `/opt/ros/jazzy` exists | `ros-jazzy-ros-base` never installed; `/opt/ros/jazzy` was created by other packages. `sudo apt install ros-jazzy-ros-base`. |
 | `colcon build` freezes on the Pi | Out of RAM: keep `--parallel-workers 1` and make sure the swap from 2c is on (`free -h`). |
