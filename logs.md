@@ -23,4 +23,6 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 - 2e in progress: `ROS_DOMAIN_ID=30` and `TURTLEBOT3_MODEL=burger` are in the Pi's `~/.bashrc`.
   - Found that `ros-jazzy-ros-base` had never actually installed (`ros2: command not found`). Installing it failed: `liblz4-dev`/`libzstd-dev` unmet dependencies. Cause: the Pi image's `ubuntu.sources` lacked `noble-updates`. Added it, ran `full-upgrade`, and ros-base installed. Added a check to guide 2c and two rows to Common problems.
 - Section 2e done: udev rule `99-turtlebot3-cdc.rules` installed; Pi env is `ROS_DOMAIN_ID=30`, `TURTLEBOT3_MODEL=burger`, `LDS_MODEL=LDS-02`.
-- **Open:** confirm `LDS-02` against the LiDAR sticker (if it differs, edit `LDS_MODEL` in the Pi's `~/.bashrc`). Next: section 3 (OpenCR firmware). Friends who already started the container need `git pull && docker compose up -d`.
+- **Open:** confirm `LDS-02` against the LiDAR sticker (if it differs, edit `LDS_MODEL` in the Pi's `~/.bashrc`). 
+- Section 3: flashed OpenCR R1.0 with `burger` firmware V230127R1 (CRC OK, jump_to_fw OK).
+- **Open:** SW1/SW2 motor test result, then section 4 (bringup on Pi + teleop from the laptop container). Friends who already started the container need `git pull && docker compose up -d`.
