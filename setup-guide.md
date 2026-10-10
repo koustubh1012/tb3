@@ -185,7 +185,7 @@ ros2 launch turtlebot3_navigation2 navigation2.launch.py map:=$HOME/map.yaml   #
 | `permission denied ... docker.sock` even after logging out and back in | Your user's systemd manager survives logout when lingering is on (`loginctl show-user $USER -p Linger`), so the new `docker` group isn't picked up. Reboot. |
 | GUI won't open from Docker (`cannot open display`) | Run `xhost +local:docker` on the laptop and check `echo $DISPLAY` inside the container is set. |
 | `/dev/ttyACM0` not found | OpenCR not powered/plugged in, or udev rules not reloaded. Check `ls /dev/ttyACM*`. |
-| LiDAR not spinning / no `/scan` | Wrong `LDS_MODEL`, or LiDAR USB cable loose. |
+| LiDAR not spinning / no `/scan` | Wrong `LDS_MODEL`, or LiDAR USB cable loose. `ros2 topic info /scan -v` shows the running driver: `hlds_laser_publisher` = LDS-01, `ld08_driver` = LDS-02, coin_d4 = LDS-03. An unknown value falls back to LDS-01. No sticker? Try LDS-02, then LDS-03. |
 | Robot jerky or stops | Battery low (OpenCR beeps), or Wi-Fi latency. |
 | Pi: `ros-jazzy-ros-base` fails with `liblz4-dev`/`libzstd-dev` unmet dependencies | `noble-updates` is missing from `/etc/apt/sources.list.d/ubuntu.sources`. Add it (see 2c), then `sudo apt update && sudo apt full-upgrade`. |
 | Pi: `ros2: command not found` though `/opt/ros/jazzy` exists | `ros-jazzy-ros-base` never installed; `/opt/ros/jazzy` was created by other packages. `sudo apt install ros-jazzy-ros-base`. |

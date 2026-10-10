@@ -4,6 +4,12 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 
 ---
 
+## 2026-10-09 — Jimmy
+- Section 4: `robot.launch.py` running on the Pi; laptop container sees all robot topics over the hotspot (`/odom`, `/scan`, `/cmd_vel`, `/imu`, ...).
+- LiDAR confirmed as **LDS-02** (no sticker on the unit). With the wrong `LDS_MODEL`, bringup started the LDS-01 driver (`hlds_laser_publisher`) and `/scan` stayed silent. With `LDS-02`, `ld08_driver` publishes ranges. Tip: `ros2 topic info /scan -v` shows which driver is running.
+- RViz (`ros2 launch turtlebot3_bringup rviz2.launch.py` in the container) shows the robot model and live LiDAR scan.
+- **Open:** SW1/SW2 motor test result, drive with teleop, then section 5 (SLAM with Cartographer). Friends who already started the container need `git pull && docker compose up -d`.
+
 ## 2026-10-04 — Jimmy
 - Set up this repo with `CLAUDE.md`, `logs.md` and `.gitignore` (ignores `maps/` and colcon build output), and published it as a private GitHub repo: https://github.com/koustubh1012/tb3
 - Updated `setup-guide.md` 1B to point to the repo root instead of a `docker/` folder, and to say "clone" instead of "copy".
@@ -23,6 +29,4 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 - 2e in progress: `ROS_DOMAIN_ID=30` and `TURTLEBOT3_MODEL=burger` are in the Pi's `~/.bashrc`.
   - Found that `ros-jazzy-ros-base` had never actually installed (`ros2: command not found`). Installing it failed: `liblz4-dev`/`libzstd-dev` unmet dependencies. Cause: the Pi image's `ubuntu.sources` lacked `noble-updates`. Added it, ran `full-upgrade`, and ros-base installed. Added a check to guide 2c and two rows to Common problems.
 - Section 2e done: udev rule `99-turtlebot3-cdc.rules` installed; Pi env is `ROS_DOMAIN_ID=30`, `TURTLEBOT3_MODEL=burger`, `LDS_MODEL=LDS-02`.
-- **Open:** confirm `LDS-02` against the LiDAR sticker (if it differs, edit `LDS_MODEL` in the Pi's `~/.bashrc`). 
 - Section 3: flashed OpenCR R1.0 with `burger` firmware V230127R1 (CRC OK, jump_to_fw OK).
-- **Open:** SW1/SW2 motor test result, then section 4 (bringup on Pi + teleop from the laptop container). Friends who already started the container need `git pull && docker compose up -d`.
