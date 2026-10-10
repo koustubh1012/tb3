@@ -8,7 +8,10 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 - Section 4: `robot.launch.py` running on the Pi; laptop container sees all robot topics over the hotspot (`/odom`, `/scan`, `/cmd_vel`, `/imu`, ...).
 - LiDAR confirmed as **LDS-02** (no sticker on the unit). With the wrong `LDS_MODEL`, bringup started the LDS-01 driver (`hlds_laser_publisher`) and `/scan` stayed silent. With `LDS-02`, `ld08_driver` publishes ranges. Tip: `ros2 topic info /scan -v` shows which driver is running.
 - RViz (`ros2 launch turtlebot3_bringup rviz2.launch.py` in the container) shows the robot model and live LiDAR scan.
-- **Open:** SW1/SW2 motor test result, drive with teleop, then section 5 (SLAM with Cartographer). Friends who already started the container need `git pull && docker compose up -d`.
+- Section 5: mapped the room with Cartographer + teleop; saved as `maps/Jimmys_room.{pgm,yaml}` (125×111 @ 0.05 m, about 6.3 × 5.6 m, closed outline). `maps/` is git-ignored, so the map lives only on this laptop.
+- Nav2 started with `navigation2.launch.py map:=/root/maps/Jimmys_room.yaml`; amcl, planner, controller, bt_navigator and waypoint_follower all up.
+  - Gotcha: when switching from mapping to Nav2, make sure Cartographer is fully stopped. A leftover `cartographer_occupancy_grid_node` keeps publishing `/map` alongside `map_server`. Check with `ros2 topic info /map -v` (should show 1 publisher). Also close teleop: it publishes zero `cmd_vel` continuously and fights Nav2.
+- **Open:** set initial pose and run waypoint following in RViz; SW1/SW2 motor test result. Friends who already started the container need `git pull && docker compose up -d`.
 
 ## 2026-10-04 — Jimmy
 - Set up this repo with `CLAUDE.md`, `logs.md` and `.gitignore` (ignores `maps/` and colcon build output), and published it as a private GitHub repo: https://github.com/koustubh1012/tb3
