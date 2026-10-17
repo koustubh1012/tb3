@@ -58,7 +58,66 @@ The `Dockerfile` and `compose.yaml` in this repo build ROS 2 Jazzy + the TurtleB
    ROS is already sourced, with `ROS_DOMAIN_ID=30` and `TURTLEBOT3_MODEL=burger` set.
 5. Maps saved to `/root/maps` in the container appear in `~/tb3/maps` on the laptop. The container restarts by itself after a reboot; `docker compose down` stops it.
 
-Every "on the laptop" command later in this guide runs inside the container (`docker compose exec tb3 bash`), or in your normal shell if you went with option A.
+### Option C: macOS laptop + Ubuntu 24.04 VM (VMware Fusion)
+For teammates on a Mac. ROS runs natively in an Ubuntu 24.04 VM (no Docker needed); the Mac is just a window into it. Apple Silicon Macs give an arm64 VM, which Jazzy supports.
+
+Placeholders used below (example values from Tanay's setup):
+
+| Placeholder | Meaning | Example |
+|---|---|---|
+| `<vm-name>` | VM hostname | `cortex` |
+| `<vm-user>` | VM username | `tanay` |
+| `<key>` | SSH key file on the Mac | `id_ed25519_robotics` |
+
+#### C1. VM networking
+- Robot work: VMware → Virtual Machine → Network Adapter → **Bridged (Wi-Fi)**. The VM joins the same Wi-Fi as the Mac and the robot, which ROS 2 discovery needs.
+- Public Wi-Fi (trains, cafés) or install-only sessions: switch to **NAT**. Hides the VM's SSH from the network.
+- After switching: `sudo nmcli device connect enp2s0`
+- Check: `ip -4 addr | grep inet` (VM) and `ipconfig getifaddr en0` (Mac); in bridged mode the first three numbers match.
+
+#### C2. Name the VM and enable SSH (in the VM)
+```bash
+sudo hostnamectl set-hostname <vm-name>
+sudo apt install -y openssh-server avahi-daemon libnss-mdns
+sudo systemctl enable --now ssh
+```
+
+#### C3. Passwordless login from the Mac (on the Mac)
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/<key>          # Enter twice for no passphrase
+ssh-copy-id -i ~/.ssh/<key>.pub <vm-user>@<vm-name>.local
+```
+Add to `~/.ssh/config`:
+```
+Host <vm-name>
+    HostName <vm-name>.local
+    User <vm-user>
+    IdentityFile ~/.ssh/<key>
+    IdentitiesOnly yes
+```
+Then `ssh <vm-name>` logs in with no password.
+
+#### C4. VS Code
+Install **Remote - SSH** (Microsoft) → Cmd+Shift+P → Remote-SSH: Connect to Host → `<vm-name>`. Files and terminals are inside the VM. GUI apps (RViz, Gazebo) can't open over SSH: run them from a terminal in the VMware window.
+
+#### C5. Disk space
+Ubuntu's LVM install may use only half the virtual disk. Check `df -h /`; to use all of it:
+```bash
+sudo lvextend -l +100%FREE -r /dev/ubuntu-vg/ubuntu-lv
+```
+
+#### C6. ROS and TurtleBot3
+From here, follow Option A (native Ubuntu 24.04 install) inside the VM.
+
+#### Common problems (VM)
+| Symptom | Fix |
+|---|---|
+| VM has `192.168.x.x` but Mac is on an iPhone hotspot (`172.20.10.x`) | VM is in NAT; switch to Bridged (Wi-Fi) with the VM powered off |
+| `nmcli` shows `connected (externally)`, no IPv4 | `sudo nmcli device set enp2s0 managed yes && sudo nmcli device connect enp2s0` |
+| `Could not resolve host` on public Wi-Fi | Switch the VM to NAT |
+| `permission denied` on docker.sock after adding the docker group | Reboot the VM (VS Code keeps the old login alive) |
+
+Every "on the laptop" command later in this guide runs inside the container (`docker compose exec tb3 bash`) for option B, in your normal shell for option A, or in a VM terminal for option C.
 
 ## 2. Raspberry Pi 4 (the robot's SBC)
 
