@@ -4,6 +4,9 @@ Newest entries first. Each entry: date, who, what changed, and what's still open
 
 ---
 
+## 2026-10-17 — Tanay
+- Added Option C (macOS laptop + Ubuntu 24.04 VM, VMware Fusion) to `setup-guide.md` section 1, with placeholders and my VM (`cortex`) as the example. Native ROS 2 Jazzy in the VM, no Docker needed.
+
 ## 2026-10-09 — Jimmy
 - Section 4: `robot.launch.py` running on the Pi; laptop container sees all robot topics over the hotspot (`/odom`, `/scan`, `/cmd_vel`, `/imu`, ...).
 - LiDAR confirmed as **LDS-02** (no sticker on the unit). With the wrong `LDS_MODEL`, bringup started the LDS-01 driver (`hlds_laser_publisher`) and `/scan` stayed silent. With `LDS-02`, `ld08_driver` publishes ranges. Tip: `ros2 topic info /scan -v` shows which driver is running.
